@@ -1,0 +1,48 @@
+🎫 EVENT TICKET BOOKING SYSTEM - QUICK START GUIDE
+
+✅ FRONTEND IS RUNNING: http://localhost:3002
+❌ BACKEND NEEDS TO BE STARTED: http://localhost:8080
+
+📋 TO START THE BACKEND:
+
+Option 1: Using IDE (Recommended)
+1. Open IntelliJ IDEA or Eclipse
+2. Import the 'backend' folder as a Maven project
+3. Run EventTicketApplication.java
+4. Backend will start on port 8080
+
+Option 2: Using Command Line (if Maven is installed)
+1. Open Command Prompt
+2. cd backend
+3. mvn spring-boot:run
+
+📊 DATABASE SETUP:
+✅ Database: event_tickets_db (created)
+✅ Username: root
+✅ Password: Password
+
+🔐 DEFAULT LOGIN CREDENTIALS:
+Admin: admin@event.com / admin123
+User: user@test.com / user123
+
+🌐 SYSTEM URLS:
+Frontend: http://localhost:3002
+Backend API: http://localhost:8080
+
+📝 WHAT TO DO NEXT:
+1. Start the backend using one of the options above
+2. Refresh the frontend page
+3. Try registering a new user or login with default credentials
+4. Test booking tickets and QR code generation
+
+⚠️ TROUBLESHOOTING:
+- If you see CORS errors, the backend isn't running
+- If you see connection refused, check if MySQL is running
+- Make sure database 'event_tickets_db' exists
+
+🎉 FEATURES TO TEST:
+✓ User Registration & Login
+✓ Event Listing & Booking
+✓ QR Code Generation
+✓ Ticket Validation (Admin)
+✓ Event Creation (Admin)
