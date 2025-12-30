@@ -29,9 +29,28 @@ public class TicketController {
             if (request.containsKey("numberOfSeats")) {
                 numberOfSeats = Integer.valueOf(request.get("numberOfSeats").toString());
             }
+
+            // Get specific seat numbers
+            List<String> seatNumbers = new java.util.ArrayList<>();
+            if (request.containsKey("seatNumbers")) {
+                List<?> list = (List<?>) request.get("seatNumbers");
+                for (Object item : list) {
+                    seatNumbers.add(item.toString());
+                }
+            }
             
-            Ticket ticket = ticketService.bookTicket(eventId, userEmail, numberOfSeats);
+            Ticket ticket = ticketService.bookTicket(eventId, userEmail, numberOfSeats, seatNumbers);
             return ResponseEntity.ok(ticket);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/event/{eventId}/seats")
+    public ResponseEntity<?> getEventSeats(@PathVariable Long eventId) {
+        try {
+            List<String> bookedSeats = ticketService.getBookedSeats(eventId);
+            return ResponseEntity.ok(bookedSeats);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }

@@ -27,7 +27,7 @@ public class TicketService {
     private QRCodeService qrCodeService;
     
     @Transactional
-    public Ticket bookTicket(Long eventId, String userEmail, int numberOfSeats) throws Exception {
+    public Ticket bookTicket(Long eventId, String userEmail, int numberOfSeats, List<String> seatNumbers) throws Exception {
         // Check if event exists and has available seats
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
@@ -37,22 +37,49 @@ public class TicketService {
             throw new RuntimeException("Cannot book tickets for past events");
         }
         
+        // Check availability
         if (event.getAvailableSeats() < numberOfSeats) {
             throw new RuntimeException("Not enough seats available. Only " + event.getAvailableSeats() + " seats left.");
+        }
+
+        // Validate that these specific seats aren't already taken
+        List<String> alreadyBooked = getBookedSeats(eventId);
+        for (String seat : seatNumbers) {
+            if (alreadyBooked.contains(seat)) {
+                throw new RuntimeException("Seat " + seat + " is already booked. Please select another seat.");
+            }
         }
         
         // Generate unique QR code data
         String qrData = eventId + "_" + userEmail + "_" + numberOfSeats + "_" + UUID.randomUUID().toString();
         String qrCodeImage = qrCodeService.generateQRCode(qrData);
         
+        // Convert seat list to comma-separated string
+        String seatString = String.join(",", seatNumbers);
+        
         // Create one ticket for all seats
-        Ticket ticket = new Ticket(eventId, userEmail, qrData, qrCodeImage, numberOfSeats);
+        Ticket ticket = new Ticket(eventId, userEmail, qrData, qrCodeImage, numberOfSeats, seatString);
         
         // Update available seats by the number of seats booked
         event.setAvailableSeats(event.getAvailableSeats() - numberOfSeats);
         eventRepository.save(event);
         
         return ticketRepository.save(ticket);
+    }
+
+    public List<String> getBookedSeats(Long eventId) {
+        List<Ticket> tickets = ticketRepository.findByEventId(eventId);
+        List<String> bookedSeats = new ArrayList<>();
+        
+        for (Ticket ticket : tickets) {
+            if (ticket.getSeatNumbers() != null && !ticket.getSeatNumbers().isEmpty()) {
+                String[] seats = ticket.getSeatNumbers().split(",");
+                for (String seat : seats) {
+                    bookedSeats.add(seat.trim());
+                }
+            }
+        }
+        return bookedSeats;
     }
     
     @Transactional

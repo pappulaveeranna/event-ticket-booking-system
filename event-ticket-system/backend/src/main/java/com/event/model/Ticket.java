@@ -25,6 +25,9 @@ public class Ticket {
     private LocalDateTime validationTime;
     private int numberOfSeats = 1;
     
+    @Column(columnDefinition = "TEXT")
+    private String seatNumbers; // Stores comma-separated seat IDs (e.g., "A1,A2")
+    
     // Constructors
     public Ticket() {
         this.bookingTime = LocalDateTime.now();
@@ -38,12 +41,13 @@ public class Ticket {
         this.bookingTime = LocalDateTime.now();
     }
     
-    public Ticket(Long eventId, String userEmail, String qrCode, String qrCodeImage, int numberOfSeats) {
+    public Ticket(Long eventId, String userEmail, String qrCode, String qrCodeImage, int numberOfSeats, String seatNumbers) {
         this.eventId = eventId;
         this.userEmail = userEmail;
         this.qrCode = qrCode;
         this.qrCodeImage = qrCodeImage;
         this.numberOfSeats = numberOfSeats;
+        this.seatNumbers = seatNumbers;
         this.bookingTime = LocalDateTime.now();
     }
     
@@ -79,4 +83,7 @@ public class Ticket {
     
     public int getNumberOfSeats() { return numberOfSeats; }
     public void setNumberOfSeats(int numberOfSeats) { this.numberOfSeats = numberOfSeats; }
+
+    public String getSeatNumbers() { return seatNumbers; }
+    public void setSeatNumbers(String seatNumbers) { this.seatNumbers = seatNumbers; }
 }
