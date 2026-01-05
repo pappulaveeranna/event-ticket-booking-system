@@ -83,7 +83,7 @@ public class TicketService {
     }
     
     @Transactional
-    public Map<String, Object> validateTicket(String qrCode) {
+    public Map<String, Object> validateTicket(String qrCode, String adminEmail) {
         Ticket ticket = ticketRepository.findByQrCode(qrCode);
         
         if (ticket == null) {
@@ -93,19 +93,27 @@ public class TicketService {
             );
         }
         
-        if (ticket.isValidated()) {
-            return Map.of(
-                "valid", false,
-                "message", "ALREADY USED - Ticket validated on " + ticket.getValidationTime()
-            );
-        }
-        
         // Check if event exists
         Event event = eventRepository.findById(ticket.getEventId()).orElse(null);
         if (event == null) {
             return Map.of(
                 "valid", false,
                 "message", "INVALID TICKET - Event not found"
+            );
+        }
+
+        // Security Check: Only the event admin can validate tickets
+        if (!event.getAdminEmail().equals(adminEmail)) {
+            return Map.of(
+                "valid", false,
+                "message", "UNAUTHORIZED - You are not the organizer of this event"
+            );
+        }
+        
+        if (ticket.isValidated()) {
+            return Map.of(
+                "valid", false,
+                "message", "ALREADY USED - Ticket validated on " + ticket.getValidationTime()
             );
         }
         

@@ -57,10 +57,11 @@ public class TicketController {
     }
     
     @PostMapping("/validate")
-    public ResponseEntity<?> validateTicket(@RequestBody Map<String, String> request) {
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> validateTicket(@RequestBody Map<String, String> request, Authentication auth) {
         try {
             String qrCode = request.get("qrCode");
-            Map<String, Object> result = ticketService.validateTicket(qrCode);
+            Map<String, Object> result = ticketService.validateTicket(qrCode, auth.getName());
             
             return ResponseEntity.ok(result);
         } catch (Exception e) {

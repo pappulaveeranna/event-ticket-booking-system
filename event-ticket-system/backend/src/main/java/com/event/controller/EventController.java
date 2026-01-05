@@ -28,6 +28,12 @@ public class EventController {
     public List<Event> getUpcomingEvents() {
         return eventRepository.findByEventDateAfter(LocalDateTime.now());
     }
+
+    @GetMapping("/my-events")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Event> getMyEvents(org.springframework.security.core.Authentication auth) {
+        return eventRepository.findByAdminEmail(auth.getName());
+    }
     
     @GetMapping("/search")
     public List<Event> searchEvents(@RequestParam String keyword) {
@@ -43,7 +49,7 @@ public class EventController {
     
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> createEvent(@RequestBody Map<String, Object> request) {
+    public ResponseEntity<?> createEvent(@RequestBody Map<String, Object> request, org.springframework.security.core.Authentication auth) {
         try {
             Event event = new Event(
                 (String) request.get("name"),
@@ -53,6 +59,8 @@ public class EventController {
                 (Integer) request.get("totalSeats"),
                 ((Number) request.get("price")).doubleValue()
             );
+            System.out.println("Creating event for admin: " + auth.getName());
+            event.setAdminEmail(auth.getName());
             
             Event savedEvent = eventRepository.save(event);
             return ResponseEntity.ok(savedEvent);

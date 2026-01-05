@@ -21,6 +21,9 @@ public class Event {
     private int availableSeats;
     private double price;
     
+    @Column(name = "admin_email")
+    private String adminEmail;
+    
     // Constructors
     public Event() {}
     
@@ -58,4 +61,7 @@ public class Event {
     
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
+
+    public String getAdminEmail() { return adminEmail; }
+    public void setAdminEmail(String adminEmail) { this.adminEmail = adminEmail; }
 }

@@ -12,6 +12,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findByEventDateAfter(LocalDateTime date);
     List<Event> findByAvailableSeatsGreaterThan(int seats);
     List<Event> findTop5ByOrderByIdDesc();
+    List<Event> findByAdminEmail(String adminEmail);
     
     @Query("SELECT e FROM Event e WHERE e.eventDate BETWEEN ?1 AND ?2")
     List<Event> findEventsBetweenDates(LocalDateTime startDate, LocalDateTime endDate);
