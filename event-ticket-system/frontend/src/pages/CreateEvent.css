@@ -1,0 +1,230 @@
+/* CreateEvent.css */
+
+.create-event-wrapper {
+    /* FULL SCREEN BREAKOUT */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    /* sits on top of main content, below navbar (1000) */
+
+    /* Padding top to account for navbar */
+    padding-top: 80px;
+    box-sizing: border-box;
+
+    /* Centering */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Vertical Center */
+
+    /* Background */
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+
+    /* Scroll if content overflows vertical space */
+    overflow-y: auto;
+}
+
+/* Background decoration bubbles */
+.create-event-wrapper::before,
+.create-event-wrapper::after {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    z-index: -1;
+    /* Behind content */
+    opacity: 0.5;
+    filter: blur(80px);
+    pointer-events: none;
+}
+
+.create-event-wrapper::before {
+    background: radial-gradient(#ff9a9e, transparent);
+    top: 10%;
+    left: 10%;
+}
+
+.create-event-wrapper::after {
+    background: radial-gradient(#fad0c4, transparent);
+    bottom: 10%;
+    right: 10%;
+}
+
+.create-event-card {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.85);
+    /* Stronger glass effect */
+    border-radius: 24px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 50px;
+
+    /* Deep shadow */
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.1),
+        0 10px 20px rgba(0, 0, 0, 0.05);
+
+    border: 1px solid rgba(255, 255, 255, 0.9);
+
+    /* Ensure card itself doesn't overflow without scroll on small screens */
+    margin: auto;
+}
+
+.create-event-header {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.create-event-header h2 {
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(to right, #2d3436, #000000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+}
+
+.create-event-header p {
+    color: #636e72;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.create-event-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 800;
+    color: #b2bec3;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    margin-left: 4px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 18px 24px;
+    border: 2px solid transparent;
+    /* invisible border usually */
+    background-color: #ffffff;
+    border-radius: 16px;
+    font-size: 16px;
+    color: #2d3436;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:hover,
+.form-group textarea:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color, #F84464);
+    box-shadow: 0 0 0 4px rgba(248, 68, 100, 0.1);
+    transform: translateY(-2px);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, #FF4B6A 0%, #FF7B5F 100%);
+    color: white;
+    border: none;
+    padding: 20px 80px;
+    font-size: 18px;
+    font-weight: 800;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 25px rgba(248, 68, 100, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.btn-submit:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 20px 35px rgba(248, 68, 100, 0.5);
+}
+
+.btn-submit:active {
+    transform: scale(0.98);
+}
+
+/* Status Messages */
+.status-message {
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.status-success {
+    background-color: #ecfdf5;
+    color: #059669;
+    border: 1px solid #a7f3d0;
+}
+
+.status-error {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+@media (max-width: 768px) {
+    .create-event-wrapper {
+        padding-top: 80px;
+        align-items: flex-start;
+        /* Better for scrolling on mobile */
+    }
+
+    .create-event-card {
+        padding: 30px 20px;
+        border-radius: 16px;
+        margin-bottom: 40px;
+        /* Space at bottom for scrolling */
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 18px;
+    }
+}
